@@ -203,29 +203,45 @@ function setupFilter() {
 function setupForm() {
     const form = document.getElementById('contact-form');
     const status = document.getElementById('form-status');
-    const WHATSAPP_NUMBER = '51902019951';
+
+    const SERVICE_ID = 'service_xtg66bj';
+    const TEMPLATE_ID = 'template_4ym1gar';
+    const PUBLIC_KEY = 'HKGh412FLdfodLNe1';
+
+    emailjs.init({
+        publicKey: PUBLIC_KEY,
+    });
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const subject = document.getElementById('subject').value.trim();
-        const message = document.getElementById('message').value.trim();
-
-        const text = `Hola, soy ${name}\n\n` +
-            `Asunto: ${subject}\n` +
-            `Correo: ${email}\n` +
-            `Mensaje: ${message}`;
-
         status.textContent = '';
         status.className = 'form-status';
 
-        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+        const btn = form.querySelector('button');
+        btn.innerHTML = '<span>Enviando...</span><i class="fas fa-spinner fa-spin"></i>';
+        btn.disabled = true;
 
-        status.textContent = 'Abriendo WhatsApp para enviar tu mensaje...';
-        status.classList.add('success');
-        form.reset();
+        const params = {
+            from_name: document.getElementById('name').value.trim(),
+            reply_to: document.getElementById('email').value.trim(),
+            subject: document.getElementById('subject').value.trim(),
+            message: document.getElementById('message').value.trim(),
+        };
+
+        emailjs.send(SERVICE_ID, TEMPLATE_ID, params)
+            .then(() => {
+                status.textContent = 'Mensaje enviado correctamente!';
+                status.classList.add('success');
+                form.reset();
+            })
+            .catch(() => {
+                status.textContent = 'Error al enviar. Intenta de nuevo.';
+                status.classList.add('error');
+            })
+            .finally(() => {
+                btn.innerHTML = '<span>Enviar Mensaje</span><i class="fas fa-paper-plane"></i>';
+                btn.disabled = false;
+            });
     });
 }
 
