@@ -203,23 +203,29 @@ function setupFilter() {
 function setupForm() {
     const form = document.getElementById('contact-form');
     const status = document.getElementById('form-status');
+    const WHATSAPP_NUMBER = '51902019951';
 
     form.addEventListener('submit', e => {
         e.preventDefault();
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const subject = document.getElementById('subject').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        const text = `Hola, soy ${name}\n\n` +
+            `Asunto: ${subject}\n` +
+            `Correo: ${email}\n` +
+            `Mensaje: ${message}`;
+
         status.textContent = '';
         status.className = 'form-status';
 
-        const btn = form.querySelector('button');
-        btn.innerHTML = '<span>Enviando...</span><i class="fas fa-spinner fa-spin"></i>';
-        btn.disabled = true;
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
 
-        setTimeout(() => {
-            status.textContent = 'Mensaje enviado correctamente!';
-            status.classList.add('success');
-            btn.innerHTML = '<span>Enviar Mensaje</span><i class="fas fa-paper-plane"></i>';
-            btn.disabled = false;
-            form.reset();
-        }, 1500);
+        status.textContent = 'Abriendo WhatsApp para enviar tu mensaje...';
+        status.classList.add('success');
+        form.reset();
     });
 }
 

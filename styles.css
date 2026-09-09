@@ -923,6 +923,17 @@ img {
     font-size: 0.9rem;
 }
 
+.contact-item a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-item a:hover {
+    color: var(--primary-light);
+}
+
 .contact-social {
     display: flex;
     gap: 12px;
