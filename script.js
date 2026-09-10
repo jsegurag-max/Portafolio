@@ -62,7 +62,7 @@ function typeWriter() {
     const texts = [
         'Desarrollador Web',
         'Creativo & Innovador',
-        'Amante de la Tecnologia',
+        'Amante de la Tecnología',
         'Problem Solver'
     ];
     const el = document.getElementById('typing');
@@ -280,6 +280,41 @@ function setupThemeToggle() {
 }
 
 // ============================================
+// LOADER
+// ============================================
+function setupLoader() {
+    const loader = document.getElementById('loader');
+    const progress = document.getElementById('loader-progress');
+    let p = 0;
+
+    const interval = setInterval(() => {
+        p += Math.random() * 25 + 10;
+        if (p >= 100) {
+            p = 100;
+            clearInterval(interval);
+            progress.style.width = p + '%';
+            setTimeout(() => loader.classList.add('hidden'), 300);
+        } else {
+            progress.style.width = p + '%';
+        }
+    }, 350);
+}
+
+// ============================================
+// CV DOWNLOAD
+// ============================================
+function setupCvDownload() {
+    const btn = document.getElementById('cv-download');
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+        setTimeout(() => {
+            btn.innerHTML = '<i class="fas fa-download"></i> Descargar CV';
+        }, 1200);
+    });
+}
+
+// ============================================
 // SMOOTH SCROLL
 // ============================================
 function setupSmoothScroll() {
@@ -298,6 +333,7 @@ function setupSmoothScroll() {
 // INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
+    setupLoader();
     createParticles();
     typeWriter();
     setupReveal();
@@ -307,6 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupForm();
     setupBackToTop();
     setupThemeToggle();
+    setupCvDownload();
     setupSmoothScroll();
     window.addEventListener('scroll', updateActiveNav);
 });
